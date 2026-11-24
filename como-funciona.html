@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cómo funciona · Draft helper</title>
+<meta name="description" content="Cómo puntúa la herramienta cada brawler en el draft de Ranked de Brawl Stars: categorías, tiers y counters.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<header class="top"><div class="in"><a class="brand" href="index.html">Draft helper</a><nav><a href="index.html">Herramienta</a><a href="como-funciona.html" aria-current="page">Cómo funciona</a><a href="privacidad.html">Privacidad</a><a href="contacto.html">Contacto</a><a href="sobre-mi.html">Sobre mí</a></nav></div></header>
+<main>
+
+<h1>Cómo funciona</h1>
+<p class="lead">Una ayuda para el draft de Ranked basada en el criterio de un jugador, no en estadísticas automáticas.</p>
+
+<h2>El draft que sigue la herramienta</h2>
+<p>Primero se hacen <strong>6 baneos</strong>. Valen para los dos equipos, así que no importa quién baneó cada brawler. Después se eligen los brawlers en este orden: el equipo con first pick elige 1, el otro equipo elige 2, el primero elige 2 más y el otro elige el último. Tú indicas si tienes first o last pick y vas marcando cada elección.</p>
+
+<h2>Las categorías</h2>
+<p>Cada brawler está en una de siete categorías propias (no son las clases oficiales del juego): Tank, Assassin, Sniper, Thrower, Anti-Tank, Control y Support. Algunos encajan en dos, y entonces cuentan en las dos.</p>
+<div class="wrap"><table>
+<tr><th>Si el rival elige…</th><th>Lo frenan</th></tr>
+<tr><td>Tank</td><td>Anti-Tank, Control</td></tr>
+<tr><td>Assassin</td><td>Tank, Anti-Tank</td></tr>
+<tr><td>Sniper</td><td>Tank, Assassin</td></tr>
+<tr><td>Thrower</td><td>Assassin</td></tr>
+<tr><td>Anti-Tank</td><td>Sniper, Thrower, Control</td></tr>
+<tr><td>Control</td><td>Sniper, Thrower</td></tr>
+<tr><td>Support</td><td>Ninguna (potencia a sus aliados, no tiene un counter directo)</td></tr>
+</table></div>
+
+<h2>Cómo puntúa cada brawler</h2>
+<ol>
+<li><strong>Puntuación base.</strong> Sale de la tier list de la temporada: S vale 5 puntos, A 4, B 3, C 2, D 1 y F 0. Si un brawler está en dos categorías, vale su mejor tier. Dentro de un mismo tier, los que van primero en la lista son mejores y desempatan.</li>
+<li><strong>Counters.</strong> Por cada pick del rival, el brawler suma 1 punto si una de sus categorías frena a una de las del rival, y resta 1 punto si una categoría del rival frena a una de las suyas. Con dos o tres picks rivales, todo se acumula. Un brawler de dos categorías puede sumar más y también restar más.</li>
+<li><strong>Mapa.</strong> Todavía no cuenta en la puntuación. Se añadirá cuando haya tier lists por mapa.</li>
+</ol>
+<p>La lista de brawlers se reordena en cada paso, con los mejores arriba y los tres primeros marcados. Los que quedan con 2 puntos o menos se ven oscurecidos al final, pero se pueden seleccionar igual.</p>
+
+<h2>Límites</h2>
+<div class="box">
+<p>Las tier lists y las relaciones entre categorías son una opinión personal. No son datos oficiales ni porcentajes de victoria medidos. Cambian con cada parche de equilibrio, y por ahora los picks de tu propio equipo no influyen en las recomendaciones. Úsalo como ayuda para pensar el draft, no como una verdad.</p>
+</div>
+<p>Si ves un error o crees que algún brawler está mal colocado, escríbeme desde la página de <a href="contacto.html">contacto</a>.</p>
+<p><small>Última revisión de los datos: <mark class="pend">noviembre de 2026</mark>. Actualiza esta fecha tras cada parche.</small></p>
+
+</main>
+<footer>
+<p>Este material no es oficial y no está respaldado por Supercell. Para obtener más información, consulte la <a href="http://supercell.com/en/fan-content-policy/es/" target="_blank" rel="noopener">Política de contenidos de fans</a>.</p>
+</footer>
+</body>
+</html>
