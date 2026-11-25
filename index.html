@@ -16,7 +16,8 @@ html,body{height:100%;margin:0}
 body{background:var(--bg);color:var(--ink);font:400 16px/1.4 "Source Sans 3",system-ui,sans-serif;overflow:hidden}
 h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;margin:0;line-height:1.1}
 .app{height:100%;display:grid;grid-template-columns:320px 1fr}
-.side{background:var(--surface);border-right:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:12px;min-height:0}
+.side{background:var(--surface);border-right:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:12px;min-height:0;overflow-y:auto}
+.side>*{flex-shrink:0}
 .side h1{font-weight:800;font-size:1.5rem}
 label{font-weight:600;font-size:.9rem;color:var(--muted)}
 select,button{font:600 1rem "Source Sans 3",system-ui,sans-serif;color:var(--ink);background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:9px 12px}
@@ -43,11 +44,11 @@ button[aria-pressed="true"]{background:var(--gem);border-color:var(--gem);color:
 .slot.pick{border-style:solid;color:var(--ink);font-weight:600}
 .slot.ban{text-decoration:line-through;border-style:solid}
 .turn{background:var(--gem-soft);border-left:6px solid var(--gem);border-radius:4px 12px 12px 4px;padding:8px 14px;font-weight:600}
-.grid{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));grid-auto-rows:62px;gap:6px;padding:6px 6px 0 0}
+.grid{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));grid-auto-rows:88px;gap:6px;padding:6px 6px 0 0}
 .tile{position:relative;border-radius:12px;border:2px solid transparent;color:#fff;font:800 .72rem/1.05 "Bricolage Grotesque",system-ui,sans-serif;text-shadow:0 1px 2px rgba(0,0,0,.4);padding:2px}
 .tile[disabled]{opacity:.3;cursor:not-allowed}
 .tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
-.tile img{width:36px;height:36px;object-fit:contain;pointer-events:none}
+.tile img{flex:1;min-height:0;width:100%;object-fit:contain;pointer-events:none}
 .tile .nm{font-size:.62rem;line-height:1.05}
 .mapimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .mapimg.has{background:var(--surface);flex:none;min-height:0;max-height:none}
@@ -55,7 +56,10 @@ button[aria-pressed="true"]{background:var(--gem);border-color:var(--gem);color:
 .mapimg.has img{position:static;display:block;width:100%;height:auto;max-height:46vh;object-fit:contain}
 .mapimg.has .cap{position:static;background:none;color:var(--ink);padding:8px 10px}
 .tile.rec{border-color:var(--ink);box-shadow:0 0 0 3px var(--gem)}
-.tile.dim{filter:brightness(.45) saturate(.5)}
+.tile.y{background:#f2c200;color:#1b1f2a;text-shadow:none}
+.tile.b{background:#2f6db5}
+.tile.r{background:#c0392b}
+.tile.x{background:var(--line);color:var(--muted);text-shadow:none}
 .badge{position:absolute;top:-8px;right:-6px;background:var(--gem);color:#fff;border-radius:99px;font:600 .75rem "Source Sans 3",sans-serif;padding:0 7px;text-shadow:none}
 .recs{display:flex;gap:8px;flex-wrap:wrap}
 .rc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 12px;font-size:.92rem}
@@ -79,6 +83,7 @@ button[aria-pressed="true"]{background:var(--gem);border-color:var(--gem);color:
 <div><label>Tu pick</label>
 <div class="seg"><button type="button" id="b-first" aria-pressed="false">First pick</button><button type="button" id="b-last" aria-pressed="false">Last pick</button></div></div>
 <div class="mini"><button id="undo">Deshacer</button><button id="reset">Reiniciar</button></div>
+<p class="hint"><b style="color:#b38f00">■</b> Top 10 · <b style="color:#2f6db5">■</b> 11 a 50 · <b style="color:#c0392b">■</b> 51 en adelante</p>
 <p class="hint">Este material no es oficial y no está respaldado por Supercell. Para obtener más información, consulte la <a href="http://supercell.com/en/fan-content-policy/es/" target="_blank" rel="noopener">Política de contenidos de fans</a>.</p>
 <p class="hint"><a href="como-funciona.html">Cómo funciona</a> · <a href="privacidad.html">Privacidad</a> · <a href="contacto.html">Contacto</a> · <a href="sobre-mi.html">Sobre mí</a></p>
 </aside>
@@ -133,11 +138,11 @@ function render(){
   $("turn").textContent=p?(step.team==="me"?"Tu equipo":"El rival")+" elige (pick "+(log.length-5)+" de 6)":"Baneos: brawler "+(log.length+1)+" de 6, valen para los dos equipos";
  }else $("turn").textContent=first?"Draft completo.":"Baneos hechos. Elige first pick o last pick para empezar los picks.";
  var g=$("grid");g.innerHTML="";
- var DIM_BELOW=2,pk=!!step&&step.t==="pick",sc={};
+ var pk=!!step&&step.t==="pick",sc={},rk=0;
  DATA.roster.forEach(function(n){sc[n]=score(n)});
  var order=DATA.roster.slice().sort(function(a,b){if(!!taken[a]!==!!taken[b])return taken[a]?1:-1;var d=pk?sc[b].total-sc[a].total:sc[b].pre-sc[a].pre;return d||a.localeCompare(b)});
- order.forEach(function(n){var b=document.createElement("button"),k=recs.map(function(r){return r.n}).indexOf(n),dim=!taken[n]&&!!step&&(pk?sc[n].total:sc[n].pre)<=DIM_BELOW;
-  b.className="tile"+(k>-1&&k<3?" rec":"")+(dim?" dim":"");b.style.background="hsl("+hue(n)+",55%,38%)";
+ order.forEach(function(n){var b=document.createElement("button"),k=recs.map(function(r){return r.n}).indexOf(n);if(!taken[n])rk++;
+  b.className="tile"+(k>-1&&k<3?" rec":"")+(taken[n]?" x":(rk<=10?" y":(rk<=50?" b":" r")));
   var im=document.createElement("img");im.alt="";im.src="img/"+slug(n)+".png";im.onerror=function(){im.remove()};b.appendChild(im);var nm=document.createElement("span");nm.className="nm";nm.textContent=n;b.appendChild(nm);b.disabled=!step||!!taken[n];
   if(k>-1&&k<3){var s=document.createElement("span");s.className="badge";s.textContent="#"+(k+1);b.appendChild(s)}
   b.onclick=function(){log.push({t:step.t,team:step.team,b:n});render()};g.appendChild(b)});
