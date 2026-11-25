@@ -15,7 +15,7 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 html,body{height:100%;margin:0}
 body{background:var(--bg);color:var(--ink);font:400 16px/1.4 "Source Sans 3",system-ui,sans-serif;overflow:hidden}
 h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;margin:0;line-height:1.1}
-.app{height:100%;display:grid;grid-template-columns:280px 1fr}
+.app{height:100%;display:grid;grid-template-columns:320px 1fr}
 .side{background:var(--surface);border-right:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:12px;min-height:0}
 .side h1{font-weight:800;font-size:1.5rem}
 label{font-weight:600;font-size:.9rem;color:var(--muted)}
@@ -50,6 +50,10 @@ button[aria-pressed="true"]{background:var(--gem);border-color:var(--gem);color:
 .tile img{width:36px;height:36px;object-fit:contain;pointer-events:none}
 .tile .nm{font-size:.62rem;line-height:1.05}
 .mapimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mapimg.has{background:var(--surface);flex:none;min-height:0;max-height:none}
+.mapimg.has svg{display:none}
+.mapimg.has img{position:static;display:block;width:100%;height:auto;max-height:46vh;object-fit:contain}
+.mapimg.has .cap{position:static;background:none;color:var(--ink);padding:8px 10px}
 .tile.rec{border-color:var(--ink);box-shadow:0 0 0 3px var(--gem)}
 .tile.dim{filter:brightness(.45) saturate(.5)}
 .badge{position:absolute;top:-8px;right:-6px;background:var(--gem);color:#fff;border-radius:99px;font:600 .75rem "Source Sans 3",sans-serif;padding:0 7px;text-shadow:none}
@@ -114,7 +118,7 @@ function score(n){var e=cats[n]||{cs:[]},up=0,down=0,bad=[];
 function slug(n){return n.toLowerCase().replace(/&/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
 function hue(n){var h=0;for(var i=0;i<n.length;i++)h=(h*31+n.charCodeAt(i))%360;return h}
 function render(){
- $("mname").textContent=map;var mi=$("mimg");mi.onerror=function(){if(mi.dataset.t!=="1"){mi.dataset.t="1";mi.src="img/maps/"+slug(map)+".png"}else{mi.style.display="none"}};if(mi.dataset.m!==map){mi.dataset.m=map;mi.dataset.t="";mi.style.display="";mi.src="img/maps/"+slug(map)+".webp"}$("mmode").textContent=modeOf(map);
+ $("mname").textContent=map;var mi=$("mimg"),box=$("img");mi.onload=function(){box.classList.add("has")};mi.onerror=function(){if(mi.dataset.t!=="1"){mi.dataset.t="1";mi.src="img/maps/"+slug(map)+".png"}else{mi.style.display="none";box.classList.remove("has")}};if(mi.dataset.m!==map){mi.dataset.m=map;mi.dataset.t="";box.classList.remove("has");mi.style.display="";mi.src="img/maps/"+slug(map)+".webp"}$("mmode").textContent=modeOf(map);
  $("b-first").setAttribute("aria-pressed",first==="me");$("b-last").setAttribute("aria-pressed",first==="foe");
  var S=seq(),step=S[log.length],taken={};
  log.forEach(function(l){taken[l.b]=l});
